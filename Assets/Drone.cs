@@ -12,6 +12,9 @@ public class Drone : MonoBehaviour
     Vector3 frontLeft, frontRight, rearLeft, rearRight;
 
     public Rigidbody body;
+    public Vector3 velocity;
+    public float speed;
+
     Transform mTransform;
 
     // Start is called before the first frame update
