@@ -56,7 +56,14 @@ public class Drone : MonoBehaviour
         {
             forward = -1;
         }
-
+        if (Input.GetKey(KeyCode.Q))
+        {
+            spin = -1;
+        }
+        if (Input.GetKey(KeyCode.E))
+        {
+            spin = 1;
+        }
         Vector3 orientation = mTransform.localRotation.eulerAngles;
         orientation.y = 0;
         FixRanges(ref orientation);
