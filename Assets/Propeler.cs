@@ -20,28 +20,28 @@ public class Propeler : MonoBehaviour
         {
             propeler.AddRelativeForce(Vector3.up * thrust);
         }
-        rotationY = drone.eulerAngles.y;
-        if (propeler.name == "Mesh2") // LEFT FRONT
-        {
+        // rotationY = drone.eulerAngles.y;
+        // if (propeler.name == "Mesh2") // LEFT FRONT
+        // {
             
-        }
+        // }
 
-        if (propeler.name == "RF") // RIGHT FRONT
-        {
-            if (Input.GetKey(KeyCode.Space))
-            {
-                propeler.AddForceAtPosition(Vector3.up * thrust, propeler.transform.position);
-            }
-        }
+        // if (propeler.name == "RF") // RIGHT FRONT
+        // {
+        //     if (Input.GetKey(KeyCode.Space))
+        //     {
+        //         propeler.AddForceAtPosition(Vector3.up * thrust, propeler.transform.position);
+        //     }
+        // }
 
-        if (propeler.name == "LB") // LEFT BACK
-        {
+        // if (propeler.name == "LB") // LEFT BACK
+        // {
 
-        }
+        // }
 
-        if (propeler.name == "RB") // RIGHT BACK
-        {
+        // if (propeler.name == "RB") // RIGHT BACK
+        // {
 
-        }
+        // }
     }
 }
