@@ -20,6 +20,6 @@ public class SpeedometerNeedle : MonoBehaviour
    
         velocity = target.velocity;
         speed = velocity.magnitude;
-        arrow.localEulerAngles = new Vector3(0, 0, 45 - (speed * 90));
+        arrow.localEulerAngles = new Vector3(0, 0, 45 - (speed * 60));
     }
 }
