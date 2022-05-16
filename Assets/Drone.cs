@@ -15,6 +15,9 @@ public class Drone : MonoBehaviour
     public Vector3 velocity;
     public float speed;
 
+    public 
+    
+    public Transform backHomeTarget;
     Transform mTransform;
 
     // Start is called before the first frame update
@@ -41,6 +44,16 @@ public class Drone : MonoBehaviour
         right = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).x;
         spin = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick).x;
         up = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick).y;
+        
+        Vector3 relativePos = backHomeTarget.position - transform.position;
+        targetRotation = Quaternion.LookRotation(relativePos, Vector3.up);
+
+        if (OVRInput.Get(OVRInput.Button.One) || Input.GetKey(KeyCode.H) {
+            while(target.rotationY != targetRotation) {
+                right = 1;
+            }
+        }
+
         if (Input.GetKey(KeyCode.W) || OVRInput.Get(OVRInput.Button.One))
         {
             forward = 1;
