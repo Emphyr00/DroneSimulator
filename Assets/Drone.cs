@@ -31,17 +31,28 @@ public class Drone : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        OVRInput.FixedUpdate();
         float forward = 0;
         float up = 0;
         float right = 0;
         float spin = 0;
-        if (Input.GetKey(KeyCode.W))
+
+        forward = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).y;
+        right = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).x;
+        spin = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick).x;
+        up = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick).y;
+        if (Input.GetKey(KeyCode.W) || OVRInput.Get(OVRInput.Button.One))
         {
             forward = 1;
         }
+        up = OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger);
         if (Input.GetKey(KeyCode.Space))
         {
             up = 1;
+        }
+        if (Input.GetKey(KeyCode.Space))
+        {
+            up = -1;
         }
         if (Input.GetKey(KeyCode.LeftShift))
         {
