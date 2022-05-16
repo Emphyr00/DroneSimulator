@@ -14,9 +14,10 @@ public class Drone : MonoBehaviour
     public Rigidbody body;
     public Vector3 velocity;
     public float speed;
-
-    public 
-    
+    public Quaternion targetRotation;
+    public float yRotation;
+    public float dronePostionZ;
+    public float homePostionZ;
     public Transform backHomeTarget;
     Transform mTransform;
 
@@ -44,28 +45,38 @@ public class Drone : MonoBehaviour
         right = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).x;
         spin = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick).x;
         up = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick).y;
-        
-        Vector3 relativePos = backHomeTarget.position - transform.position;
-        targetRotation = Quaternion.LookRotation(relativePos, Vector3.up);
 
-        if (OVRInput.Get(OVRInput.Button.One) || Input.GetKey(KeyCode.H) {
-            while(target.rotationY != targetRotation) {
-                right = 1;
+        Vector3 relativePos = backHomeTarget.position - mTransform.position;
+        targetRotation = Quaternion.LookRotation(relativePos, Vector3.up);
+        yRotation = mTransform.rotation.eulerAngles.y - targetRotation.eulerAngles.y;
+        dronePostionZ = mTransform.position.z;
+        homePostionZ = backHomeTarget.position.z;
+        if (OVRInput.Get(OVRInput.Button.One) || Input.GetKey(KeyCode.H)) {
+            if (mTransform.rotation.eulerAngles.y - targetRotation.eulerAngles.y > 3 || mTransform.rotation.eulerAngles.y - targetRotation.eulerAngles.y < -3 ) {
+                spin = 1;
+            }
+            else
+            {
+                spin = 0;
+                if ((mTransform.position.z - backHomeTarget.position.z > 0.3 || mTransform.position.z - backHomeTarget.position.z < -0.3) && (mTransform.position.x - backHomeTarget.position.x > 0.3 || mTransform.position.x - backHomeTarget.position.x < -0.3))
+                {
+                    forward = 1;
+                }
+                else
+                {
+                    forward = 0;
+                    up = -1;
+                }
             }
         }
 
-        if (Input.GetKey(KeyCode.W) || OVRInput.Get(OVRInput.Button.One))
+        if (Input.GetKey(KeyCode.W))
         {
             forward = 1;
         }
-        up = OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger);
         if (Input.GetKey(KeyCode.Space))
         {
             up = 1;
-        }
-        if (Input.GetKey(KeyCode.Space))
-        {
-            up = -1;
         }
         if (Input.GetKey(KeyCode.LeftShift))
         {
