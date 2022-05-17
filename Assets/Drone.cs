@@ -51,22 +51,26 @@ public class Drone : MonoBehaviour
         yRotation = mTransform.rotation.eulerAngles.y - targetRotation.eulerAngles.y;
         dronePostionZ = mTransform.position.z;
         homePostionZ = backHomeTarget.position.z;
-        if (OVRInput.Get(OVRInput.Button.One) || Input.GetKey(KeyCode.H)) {
-            if (mTransform.rotation.eulerAngles.y - targetRotation.eulerAngles.y > 3 || mTransform.rotation.eulerAngles.y - targetRotation.eulerAngles.y < -3 ) {
-                spin = 1;
-            }
-            else
+        if (OVRInput.Get(OVRInput.Button.One) || Input.GetKey(KeyCode.H)) 
+        {
+            if ((mTransform.position.z - backHomeTarget.position.z > 0.3 || mTransform.position.z - backHomeTarget.position.z < -0.3) && (mTransform.position.x - backHomeTarget.position.x > 0.3 || mTransform.position.x - backHomeTarget.position.x < -0.3))
             {
-                spin = 0;
-                if ((mTransform.position.z - backHomeTarget.position.z > 0.3 || mTransform.position.z - backHomeTarget.position.z < -0.3) && (mTransform.position.x - backHomeTarget.position.x > 0.3 || mTransform.position.x - backHomeTarget.position.x < -0.3))
+                if (mTransform.rotation.eulerAngles.y - targetRotation.eulerAngles.y > 3) {
+                spin = -1;
+                }
+                else if (mTransform.rotation.eulerAngles.y - targetRotation.eulerAngles.y < -3)
                 {
-                    forward = 1;
+                    spin = 1;
                 }
                 else
                 {
-                    forward = 0;
-                    up = -1;
+                    forward = 1;
                 }
+            }
+            else
+            {
+                forward = 0;
+                up = -1;
             }
         }
 
