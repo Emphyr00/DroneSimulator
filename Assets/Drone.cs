@@ -53,25 +53,7 @@ public class Drone : MonoBehaviour
         homePostionZ = backHomeTarget.position.z;
         if (OVRInput.Get(OVRInput.Button.One) || Input.GetKey(KeyCode.H)) 
         {
-            if ((mTransform.position.z - backHomeTarget.position.z > 0.3 || mTransform.position.z - backHomeTarget.position.z < -0.3) && (mTransform.position.x - backHomeTarget.position.x > 0.3 || mTransform.position.x - backHomeTarget.position.x < -0.3))
-            {
-                if (mTransform.rotation.eulerAngles.y - targetRotation.eulerAngles.y > 3) {
-                spin = -1;
-                }
-                else if (mTransform.rotation.eulerAngles.y - targetRotation.eulerAngles.y < -3)
-                {
-                    spin = 1;
-                }
-                else
-                {
-                    forward = 1;
-                }
-            }
-            else
-            {
-                forward = 0;
-                up = -1;
-            }
+            BackHome(ref spin, ref forward, ref up);
         }
 
         if (Input.GetKey(KeyCode.W))
@@ -84,7 +66,7 @@ public class Drone : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            up = -1;
+            up = -2;
         }
         if (Input.GetKey(KeyCode.D))
         {
@@ -108,17 +90,17 @@ public class Drone : MonoBehaviour
         }
         Vector3 orientation = mTransform.localRotation.eulerAngles;
         orientation.y = 0;
-        FixRanges(ref orientation);
+        CorrectAngles(ref orientation);
 
         Vector3 localangularvelocity = mTransform.InverseTransformDirection(body.angularVelocity);
 
         float velY = body.velocity.y;
 
-        float desiredForward = forward * MAX_TILT - (orientation.x + localangularvelocity.x * 15);
-        float desiredRight = -right * MAX_TILT - (orientation.z + localangularvelocity.z * 15);
-        float desiredSpin = spin - localangularvelocity.y;
+        float correctedForward = forward * MAX_TILT - (orientation.x + localangularvelocity.x * 15);
+        float correctedRight = -right * MAX_TILT - (orientation.z + localangularvelocity.z * 15);
+        float correctedSpin = spin - localangularvelocity.y;
 
-        ApplyForces(desiredForward / MAX_TILT, desiredRight / MAX_TILT, up - velY, desiredSpin);
+        ApplyForces(correctedForward / MAX_TILT, correctedRight / MAX_TILT, up - velY, correctedSpin);
     }
 
     void ApplyForces(float forward, float right, float up, float spin)
@@ -149,7 +131,7 @@ public class Drone : MonoBehaviour
         body.AddForceAtPosition(-mTransform.right * spin, mTransform.position - mTransform.forward);
     }
 
-    void FixRanges(ref Vector3 euler)
+    void CorrectAngles(ref Vector3 euler)
     {
         if (euler.x < -180)
             euler.x += 360;
@@ -165,5 +147,29 @@ public class Drone : MonoBehaviour
             euler.z += 360;
         else if (euler.z > 180)
             euler.z -= 360;
+    }
+
+    void BackHome (ref float spin, ref float forward, ref float up)
+    {
+        if ((mTransform.position.z - backHomeTarget.position.z > 0.4 || mTransform.position.z - backHomeTarget.position.z < -0.4) && (mTransform.position.x - backHomeTarget.position.x > 0.4 || mTransform.position.x - backHomeTarget.position.x < -0.4))
+        {
+            if (mTransform.rotation.eulerAngles.y - targetRotation.eulerAngles.y > 3)
+            {
+                spin = -1;
+            }
+            else if (mTransform.rotation.eulerAngles.y - targetRotation.eulerAngles.y < -3)
+            {
+                spin = 1;
+            }
+            else
+            {
+                forward = 1;
+            }
+        }
+        else
+        {
+            forward = 0;
+            up = -1;
+        }
     }
 }
